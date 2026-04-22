@@ -1920,6 +1920,7 @@ function toggleSidePanel() {
     fab.textContent = '☰';
   } else {
     closePopup();
+    closeRightPanel();
     panel.classList.add('open');
     overlay.classList.add('visible');
     fab.textContent = '✕';
@@ -1936,16 +1937,24 @@ function toggleRightPanel() {
     info.textContent = 'ⓘ';
   } else {
     closePopup();
+    closeSidePanel();
     panel.classList.add('open');
     overlay.classList.add('visible');
     info.textContent = '✕';
   }
 }
+
 function closeSidePanel() {
   document.getElementById('side-panel').classList.remove('open');
   document.getElementById('overlay').classList.remove('visible');
   const fab = document.getElementById('fab-menu');
   if (fab) fab.textContent = '☰';
+}
+function closeRightPanel() {
+  document.getElementById('country-panel').classList.remove('open');
+  document.getElementById('overlay').classList.remove('visible');
+  const info = document.getElementById('info-menu');
+  if (info) info.textContent = 'ⓘ';
 }
 
 function closePopup() {
