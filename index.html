@@ -754,7 +754,7 @@
   #fab-menu:active { transform: scale(0.9); }
 
   #info-menu {
-    display: flex;
+    display: none;
     position: absolute;
     z-index: 1001;
     width: 40px; height: 40px;
@@ -802,8 +802,7 @@
     .logo-text p { display: none; }
 
     .cohort-list { max-height: calc(60dvh - 100px); }
-    #country-panel .side-card { display: none; }
-    #right-panel {
+    #country-panel {
       position: absolute;
       padding: 0 0 0 18px;
       bottom: auto !important;
@@ -816,12 +815,12 @@
       pointer-events: none;
       z-index: 1100;
     }
-    #right-panel.open {
+    #country-panel.open {
       transform: translateX(0);
       pointer-events: all;
     }
-    #right-panel .side-card { max-height: calc(100dvh - var(--header-h) - var(--bottom-h) - 200px); overflow: hidden; display: flex; flex-direction: column; }
- 
+    #country-panel .side-card { max-height: calc(100dvh - var(--header-h) - var(--bottom-h) - 200px); overflow: hidden; display: flex; flex-direction: column; }
+    #info-menu { display: flex; }
     #scholar-popup {
       top: auto !important;
       right: 12px;
@@ -920,42 +919,6 @@
   <div class="side-card">
     <h2>Cohort Years</h2>
     <div class="cohort-list" id="cohort-list"></div>
-  </div>
-</div>
-
-<!-- COUNTRY/GENDER RIGHT PANEL -->
-<div id="right-panel">
-  <div id="gender-panel" class="side-card">
-    <div class="gender-header">Gender Split</div>
-    <div class="gender-stats">
-      <div class="gender-item female">
-        <span class="gender-dot"></span>
-        <span class="gender-item-h1">FEMALE</span>
-        <span id="stat-female">0</span>
-      </div>
-      <div class="gender-item male">
-        <span class="gender-dot"></span>
-        <span class="gender-item-h1">MALE</span>
-        <span id="stat-male">0</span>
-      </div>
-    </div>
-    <div class="gender-bar-wrap">
-      <span class="gender-pct-left" id="stat-female-pct">0%</span>
-
-      <div class="gender-bar">
-        <div class="gender-bar-female" id="gender-bar-female"></div>
-        <div class="gender-bar-male" id="gender-bar-male"></div>
-      </div>
-
-      <span class="gender-pct-right" id="stat-male-pct">0%</span>
-    </div>
-  </div>
-  <div class="side-card">
-    <div class="country-panel-header">
-      <h2>By Country</h2>
-      <div class="country-panel-sub" id="country-panel-sub">all years</div>
-    </div>
-    <div class="country-list" id="country-list"></div>
   </div>
 </div>
 
@@ -1963,7 +1926,7 @@ function toggleSidePanel() {
   }
 }
 function toggleRightPanel() {
-  const panel = document.getElementById('right-panel');
+  const panel = document.getElementById('country-panel');
   const overlay = document.getElementById('overlay');
   const info = document.getElementById('info-menu');
   const isOpen = panel.classList.contains('open');
