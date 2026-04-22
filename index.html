@@ -179,7 +179,7 @@
     top: 100px;
     left: 0;
     width: 320px;
-    height: max-content;
+    max-height: 60%;
     bottom: 100px;
     z-index: 1000;
     display: flex;
@@ -694,9 +694,8 @@
     top: calc(var(--header-h) + 50px) !important;
     left: 12px !important; right: auto !important;
     bottom: auto !important;
-    width: min(280px, calc(100vw - 24px)) !important;
-    max-height: 60dvh;
-    padding: 0 12px 12px !important;
+    width: min(250px, calc(100vw - 24px)) !important;
+    padding: 0 0px 12px !important;
     transform: translateX(-110%);
     transition: transform 0.35s cubic-bezier(0.32,0.72,0,1);
     pointer-events: none;
@@ -754,6 +753,27 @@
   }
   #fab-menu:active { transform: scale(0.9); }
 
+  #info-menu {
+    display: flex;
+    position: absolute;
+    z-index: 1001;
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    background: var(--teal-bright);
+    color: var(--ocean-deep);
+    border: none;
+    font-size: 1.2rem;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 20px rgba(0,212,200,0.4);
+    transition: transform 0.2s, background 0.2s;
+    top: calc(var(--header-h) + 6px);
+    right: 12px;
+    touch-action: manipulation;
+  }
+  #info-menu:active { transform: scale(0.9); }
+  
   /* Overlay backdrop */
   #overlay {
     display: none;
@@ -782,7 +802,26 @@
     .logo-text p { display: none; }
 
     .cohort-list { max-height: calc(60dvh - 100px); }
-
+    #country-panel .side-card { display: none; }
+    #right-panel {
+      position: absolute;
+      padding: 0 0 0 18px;
+      bottom: auto !important;
+      pointer-events: none;
+      top: calc(var(--header-h) + 50px) !important;
+      right: 12px !important;
+      width: 220px;
+      transform: translateX(110%);
+      transition: transform 0.35s cubic-bezier(0.32,0.72,0,1);
+      pointer-events: none;
+      z-index: 1100;
+    }
+    #right-panel.open {
+      transform: translateX(0);
+      pointer-events: all;
+    }
+    #right-panel .side-card { max-height: calc(100dvh - var(--header-h) - var(--bottom-h) - 200px); overflow: hidden; display: flex; flex-direction: column; }
+ 
     #scholar-popup {
       top: auto !important;
       right: 12px;
@@ -873,12 +912,50 @@
 
 <!-- FAB — mobile menu toggle -->
 <button id="fab-menu" onclick="toggleSidePanel()" aria-label="Open cohort filter">☰</button>
+<!-- INFO — mobile menu toggle -->
+<button id="info-menu" onclick="toggleRightPanel()" aria-label="Open country filter">ⓘ</button>
 
 <!-- SIDE PANEL -->
 <div id="side-panel">
   <div class="side-card">
     <h2>Cohort Years</h2>
     <div class="cohort-list" id="cohort-list"></div>
+  </div>
+</div>
+
+<!-- COUNTRY/GENDER RIGHT PANEL -->
+<div id="right-panel">
+  <div id="gender-panel" class="side-card">
+    <div class="gender-header">Gender Split</div>
+    <div class="gender-stats">
+      <div class="gender-item female">
+        <span class="gender-dot"></span>
+        <span class="gender-item-h1">FEMALE</span>
+        <span id="stat-female">0</span>
+      </div>
+      <div class="gender-item male">
+        <span class="gender-dot"></span>
+        <span class="gender-item-h1">MALE</span>
+        <span id="stat-male">0</span>
+      </div>
+    </div>
+    <div class="gender-bar-wrap">
+      <span class="gender-pct-left" id="stat-female-pct">0%</span>
+
+      <div class="gender-bar">
+        <div class="gender-bar-female" id="gender-bar-female"></div>
+        <div class="gender-bar-male" id="gender-bar-male"></div>
+      </div>
+
+      <span class="gender-pct-right" id="stat-male-pct">0%</span>
+    </div>
+  </div>
+  <div class="side-card">
+    <div class="country-panel-header">
+      <h2>By Country</h2>
+      <div class="country-panel-sub" id="country-panel-sub">all years</div>
+    </div>
+    <div class="country-list" id="country-list"></div>
   </div>
 </div>
 
@@ -1435,10 +1512,18 @@ function updateCountryBadge() {
   if (!badge) {
     badge = document.createElement('div');
     badge.id = 'country-badge';
-    badge.style.cssText = `position:absolute;top:90px;left:50%;transform:translateX(-50%);z-index:1001;
-      background:rgba(5,13,26,0.92);border:1px solid #00d4c8;border-radius:20px;
-      padding:6px 16px;font-size:0.75rem;color:#00d4c8;letter-spacing:0.08em;
-      display:flex;align-items:center;gap:8px;cursor:pointer;backdrop-filter:blur(8px);`;
+    const isMobile = window.innerWidth <= 768;
+    if (isMobile) {
+      badge.style.cssText = `position:absolute;bottom:90px;left:50%;transform:translateX(-50%);z-index:1001;
+        background:rgba(5,13,26,0.92);border:1px solid #00d4c8;border-radius:20px;width:max-content;
+        padding:6px 16px;font-size:0.75rem;color:#00d4c8;letter-spacing:0.08em;
+        display:flex;align-items:center;gap:8px;cursor:pointer;backdrop-filter:blur(8px);`;
+    } else {
+      badge.style.cssText = `position:absolute;top:90px;left:50%;transform:translateX(-50%);z-index:1001;
+        background:rgba(5,13,26,0.92);border:1px solid #00d4c8;border-radius:20px;
+        padding:6px 16px;font-size:0.75rem;color:#00d4c8;letter-spacing:0.08em;
+        display:flex;align-items:center;gap:8px;cursor:pointer;backdrop-filter:blur(8px);`;
+    }
     badge.addEventListener('click', () => {
       activeCountry = null;
       refreshCountryLayer();
@@ -1554,7 +1639,7 @@ function showPicker(grpScholars, lat, lng) {
   document.getElementById('country-panel').style.display = 'none';
   const isMobile = window.innerWidth <= 768;
   if (isMobile) {
-    picker.style.cssText = `position:absolute;z-index:2500;right:12px;bottom:var(--bottom-h);width:40%;
+    picker.style.cssText = `position:absolute;z-index:2500;right:12px;bottom:var(--bottom-h);width:50%;
       background:rgba(5,13,26,0.95);border:1px solid rgba(0,212,200,0.25);border-radius:12px;
       backdrop-filter:blur(14px);box-shadow:0 -8px 32px rgba(0,0,0,0.5);overflow:hidden;scrollbar-width: thin;scrollbar-color: var(--teal-dim) transparent; }`;
   } else {
@@ -1877,7 +1962,22 @@ function toggleSidePanel() {
     fab.textContent = '✕';
   }
 }
-
+function toggleRightPanel() {
+  const panel = document.getElementById('right-panel');
+  const overlay = document.getElementById('overlay');
+  const info = document.getElementById('info-menu');
+  const isOpen = panel.classList.contains('open');
+  if (isOpen) {
+    panel.classList.remove('open');
+    overlay.classList.remove('visible');
+    info.textContent = 'ⓘ';
+  } else {
+    closePopup();
+    panel.classList.add('open');
+    overlay.classList.add('visible');
+    info.textContent = '✕';
+  }
+}
 function closeSidePanel() {
   document.getElementById('side-panel').classList.remove('open');
   document.getElementById('overlay').classList.remove('visible');
