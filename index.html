@@ -1562,7 +1562,7 @@ function showPicker(grpScholars, lat, lng) {
     const mapEl = document.getElementById('map');
     const rect = mapEl.getBoundingClientRect();
     picker.style.cssText = `position:absolute;z-index:2500;width:260px;
-      left:${Math.min(rect.width/2 + 20, rect.width - 280)}px;top:calc(var(--header-h,60px) + 70px);
+      right:12px;bottom:var(--bottom-h);
       background:rgba(5,13,26,0.95);border:1px solid rgba(0,212,200,0.25);
       border-radius:12px;backdrop-filter:blur(14px);box-shadow:0 16px 48px rgba(0,0,0,0.6);overflow:hidden;scrollbar-width: thin;scrollbar-color: var(--teal-dim) transparent; }`;
   }
