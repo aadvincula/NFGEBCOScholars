@@ -1233,6 +1233,8 @@ const map = L.map('map', {
   minZoom: 2.1,
   zoomControl: false,
   attributionControl: false,
+  maxBounds: [[-85, -180], [85, 180]],
+  maxBoundsViscosity: 1.0
 });
 
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -1817,6 +1819,7 @@ function buildYearTicks() {
     tick.innerHTML = `<div class="tick-line"></div><div class="tick-year">${2003+y}</div>`;
     if (hasData) {
       tick.addEventListener('click', () => {
+        closePopup();
         const yi = parseInt(tick.dataset.year);
         if (!activeYears) activeYears = new Set();
         if (activeYears.has(yi)) {
