@@ -776,6 +776,7 @@
     touch-action: manipulation;
   }
   #info-menu:active { transform: scale(0.9); }
+  
     /* Gallery FAB */
   #fab-gallery {
     position: absolute;
@@ -925,6 +926,15 @@
     max-width: 480px;
   }
 
+  .fade-img {
+    opacity: 0;
+    transition: opacity 0.45s ease;
+  }
+  
+  .fade-img.is-loaded {
+    opacity: 1;
+  }
+  
   /* ── SECTION WRAPPER ── */
   .gs-section {
     padding: clamp(36px, 6vw, 72px) clamp(20px, 6vw, 56px);
@@ -3206,7 +3216,7 @@ async function openGallery() {
     // Set hero background from first technical image if available
     if (GALLERY_DATA.technical[0]?.src) {
       const bg = document.getElementById('gs-hero-bg');
-      if (bg) bg.innerHTML = `<img src="${GALLERY_DATA.technical[0].src}" alt="hero" loading="eager">`;
+      if (bg) bg.innerHTML = `<img class="fade-img" src="${GALLERY_DATA.technical[0].src}" alt="hero" loading="eager" onload="this.classList.add('is-loaded')">`;
     }
 
     modal.dataset.built = '1';
