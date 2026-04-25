@@ -823,28 +823,38 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 14px 20px;
-    background: rgba(10,21,32,0.95);
+    gap: 8px;
+    padding: 12px 16px;
+    background: rgba(10,21,32,0.97);
     backdrop-filter: blur(12px);
     border-bottom: 1px solid rgba(0,212,200,0.1);
+    flex-wrap: wrap;
   }
   .gm-topbar-title {
     font-family: 'Playfair Display', serif;
-    font-size: clamp(0.85rem, 2.5vw, 1.05rem);
+    font-size: clamp(0.78rem, 2.5vw, 1.05rem);
     font-weight: 700;
     color: var(--teal-bright);
     letter-spacing: 0.04em;
+    white-space: nowrap;
+    flex-shrink: 0;
   }
   .gm-topbar-nav {
     display: flex;
-    gap: 6px;
+    gap: 4px;
     align-items: center;
+    flex: 1;
+    justify-content: center;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
   }
+  .gm-topbar-nav::-webkit-scrollbar { display: none; }
   .gm-nav-pill {
-    padding: 5px 12px;
+    padding: 5px 11px;
     border-radius: 20px;
-    font-size: 0.62rem;
-    letter-spacing: 0.1em;
+    font-size: 0.6rem;
+    letter-spacing: 0.08em;
     text-transform: uppercase;
     color: var(--text-muted);
     background: transparent;
@@ -852,6 +862,7 @@
     cursor: pointer;
     transition: all 0.2s;
     white-space: nowrap;
+    flex-shrink: 0;
     touch-action: manipulation;
   }
   .gm-nav-pill:hover { color: var(--text-secondary); border-color: var(--border); }
@@ -867,11 +878,29 @@
     display: flex; align-items: center; justify-content: center;
     transition: background 0.2s;
     flex-shrink: 0;
-    margin-left: 8px;
     touch-action: manipulation;
   }
   .gm-close:hover { background: rgba(255,255,255,0.12); color: var(--text-primary); }
 
+  /* Mobile topbar — title+close on row 1, nav pills on row 2 */
+  @media (max-width: 560px) {
+    .gm-topbar {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 10px;
+      padding: 10px 14px 8px;
+    }
+    .gm-topbar-row1 {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .gm-topbar-nav {
+      justify-content: flex-start;
+      padding-bottom: 2px;
+    }
+    .gm-nav-pill { display: flex !important; font-size: 0.58rem; padding: 5px 10px; }
+  }
   /* ── HERO SECTION ── */
   .gs-hero {
     position: relative;
@@ -1615,14 +1644,16 @@
 
   <!-- Sticky top bar -->
   <div class="gm-topbar">
-    <div class="gm-topbar-title">NF–GEBCO · Program Story</div>
-    <div class="gm-topbar-nav">
-      <button class="gm-nav-pill active" onclick="gScrollTo('gs-technical')">Technical</button>
-      <button class="gm-nav-pill" onclick="gScrollTo('gs-fun')">Fun Times</button>
-      <button class="gm-nav-pill" onclick="gScrollTo('gs-reviews')">Reviews</button>
-      <button class="gm-nav-pill" onclick="gScrollTo('gs-alumni')">Alumni</button>
+    <div class="gm-topbar-row1">
+      <div class="gm-topbar-title">NF–GEBCO · Program Story</div>
+      <button class="gm-close" onclick="closeGallery()" aria-label="Close">✕</button>
     </div>
-    <button class="gm-close" onclick="closeGallery()" aria-label="Close">✕</button>
+    <div class="gm-topbar-nav">
+      <button class="gm-nav-pill active" onclick="gScrollTo('gs-technical')">🔬 Technical</button>
+      <button class="gm-nav-pill" onclick="gScrollTo('gs-fun')">🎉 Fun Times</button>
+      <button class="gm-nav-pill" onclick="gScrollTo('gs-reviews')">💬 Reviews</button>
+      <button class="gm-nav-pill" onclick="gScrollTo('gs-alumni')">🌟 Alumni</button>
+    </div>
   </div>
 
   <!-- Hero -->
